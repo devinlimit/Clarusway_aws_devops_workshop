@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+  
+Description: >
+  CloudFormation Template for Roman Numerals Converter Application. This template creates
+  Python Flask Web Application on Amazon Linux 2 
+  Roman Numerals Converter Application is downloaded from Github repository, then installed on Flask.
+
+
+
+Resources:
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP for Flask Web Server
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+  WebServerHost:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0c94855ba95c71c99
+      InstanceType: t2.micro
+      KeyName: ya_lin
+      SecurityGroupIds:
+        - !Ref WebServerSecurityGroup
+      Tags:                
+        - Key: Name
+          Value: !Sub WebServerSecurityGroup  
+      UserData:
+        Fn::Base64: 
+          !Sub |
+            #! /bin/bash
+            sudo yum update -y
+            sudo yum install python3 -y
+            sudo pip3 install flask
+            mkdir flaskapp
+            cd flaskapp 
+            mkdir templates
+            cd templates
+            wget https://raw.githubusercontent.com/E2011Yahya/cw_myworkshop/master/aws/projects/001-roman-numerals-converter/templates/index.html
+            wget https://raw.githubusercontent.com/E2011Yahya/cw_myworkshop/master/aws/projects/001-roman-numerals-converter/templates/result.html
+            cd ..
+            wget https://raw.githubusercontent.com/E2011Yahya/cw_myworkshop/master/aws/projects/001-roman-numerals-converter/app2.py
+            sudo python3 app.py
+                       
+Outputs:
+  InstanceId:
+    Description: InstanceId of the first EC2 instance
+    Value: !Ref WebServerHost
+  PublicDNS:
+    Description: Public DNS Name of the EC2 instance
+    Value: !GetAtt 
+      - WebServerHost
+      - PublicDnsName
+            
+
+
+
+
+
+
+
+
+      
