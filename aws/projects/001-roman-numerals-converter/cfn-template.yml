@@ -6,6 +6,11 @@ Description: >
   Python Flask Web Application on Amazon Linux 2 
   Roman Numerals Converter Application is downloaded from Github repository, then installed on Flask.
 
+Parameters:
+  KeyPairName:
+    Description: Enter the name of your Key Pair for SSH connection
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: Must one of the existing EC2 KeyPair 
 
 
 Resources:
@@ -25,14 +30,14 @@ Resources:
   WebServerHost:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-0c94855ba95c71c99
+      ImageId: ami-0947d2ba12ee1ff75
       InstanceType: t2.micro
-      KeyName: ya_lin
+      KeyName: !Ref KeyPairName
       SecurityGroupIds:
         - !Ref WebServerSecurityGroup
       Tags:                
         - Key: Name
-          Value: !Sub WebServerSecurityGroup  
+          Value: !Sub Web Server of ${AWS::StackName} Stack 
       UserData:
         Fn::Base64: 
           !Sub |
@@ -44,11 +49,11 @@ Resources:
             cd flaskapp 
             mkdir templates
             cd templates
-            wget https://raw.githubusercontent.com/E2011Yahya/cw_myworkshop/master/aws/projects/001-roman-numerals-converter/templates/index.html
-            wget https://raw.githubusercontent.com/E2011Yahya/cw_myworkshop/master/aws/projects/001-roman-numerals-converter/templates/result.html
+            wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/001-roman-numerals-converter/templates/index.html
+            wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/001-roman-numerals-converter/templates/result.html
             cd ..
-            wget https://raw.githubusercontent.com/E2011Yahya/cw_myworkshop/master/aws/projects/001-roman-numerals-converter/app2.py
-            sudo python3 app.py
+            wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/001-roman-numerals-converter/app3.py
+            sudo python3 app3.py
                        
 Outputs:
   InstanceId:
