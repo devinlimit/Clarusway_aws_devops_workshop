@@ -2,22 +2,32 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-##print("###  This program converts decimal numbers to Roman Numerals ###")
-##print("""(To exit the program, please type "exit")""")
-#number = 1   ### olmasa da çalışıyor!..
+#@app.route("/",)
+#def index():
+#    return render_template('index.html', developer_name = 'E2014_Devin', not_valid = False)
+    
+@app.route("/", methods = ['GET', 'POST'])
+def index_post():
 
-def numberenter(number):
+    if request.method == 'GET':
+        return render_template('index.html', developer_name = 'E2014_Devin', not_valid = False)
+
+    else:
+        number = request.form['number']
+        
+        digits = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+        numset = set(number)
+        lennum1 = len(numset - digits)
+        if lennum1 > 0:
+            return render_template('index.html', developer_name = 'E2014_Devin', not_valid = True )
+
+        number = int(number)
+        if (1 > number) or (number > 3999):
+            return render_template('index.html', developer_name = 'E2014_Devin', not_valid = True)
     
-    #number = input("Please enter a number between 1 and 3999, inclusively :") 
+    #elif not ((1 > number) or (number > 3999)):
     
-    #while number == "exit":
-    #    return("Exiting the program... Good Bye")
-    #    break
-    
-    if 0 < int(number) < 4000:
-    
-        if 0 < int(number) < 4000:
-            number = int(number)       
+        else:
             num1 = number % 10
             num10 = ((number % 100) - num1)
             num100 = ((number % 1000) - (num10 + num1))
@@ -59,7 +69,6 @@ def numberenter(number):
                     rn3 = "XC"
                 break
             
-
             while bnum1:
                 if bnum1 < 4:
                     rn4 = (bnum1 * "I")
@@ -73,29 +82,11 @@ def numberenter(number):
     
             rn = rn1 + rn2 + rn3 + rn4
 
-            return rn
+        #   return rn
         #   return numberenter(number)
 
-
-@app.route("/",)
-def index():
-    return render_template('index.html', developer_name = 'E2014_Devin', not_valid = False)
-    
-@app.route("/", methods = ['POST'])
-def index_post():
-    number = request.form['number']
-    digits = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
-    numset = set(number)
-    lennum1 = len(numset - digits)
-    if lennum1 > 0:
-        return render_template('index.html', developer_name = 'E2014_Devin', not_valid = True )
-
-    number = int(number)
-    if (1 > number) or (number > 3999):
-        return render_template('index.html', developer_name = 'E2014_Devin', not_valid = True)
-        
-    return render_template("result.html", developer_name = 'E2014_Devin', number_decimal = number, number_roman = numberenter(number) )
+            return render_template("result.html", developer_name = 'E2014_Devin', number_decimal = number, number_roman = rn)
 
 if __name__ == '__main__':
-    #app.run(debug = True)
-    app.run(host='0.0.0.0', port=80)
+    app.run(debug = True)
+    #app.run(host='0.0.0.0', port=80)
