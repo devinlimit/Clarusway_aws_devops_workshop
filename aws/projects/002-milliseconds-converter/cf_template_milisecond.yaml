@@ -33,7 +33,7 @@ Resources:
       LaunchTemplateData: 
         ImageId:  ami-04bf6dcdc9ab498ca
         InstanceType: t2.micro
-        KeyName: o
+        KeyName: p
         SecurityGroupIds: 
           - !GetAtt WebServerSecurityGroup.GroupId
         TagSpecifications:
