@@ -31,7 +31,7 @@ Resources:
     Type: AWS::EC2::LaunchTemplate
     Properties:
       LaunchTemplateData: 
-        ImageId: ami-0947d2ba12ee1ff75
+        ImageId:  ami-04bf6dcdc9ab498ca
         InstanceType: t2.micro
         KeyName: o
         SecurityGroupIds: 
@@ -56,7 +56,7 @@ Resources:
             wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/002-milliseconds-converter/templates/index.html
             wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/002-milliseconds-converter/templates/result.html
             cd ..
-            wget https://raw.githubusercontent.com/E2011Yahya/cw_myworkshop/master/aws/projects/002-milliseconds-converter/app.py
+            wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/002-milliseconds-converter/app_boolprintloop.py
             sudo python3 app_boolprintloop.py
 
   WebServerTargetGroup:
@@ -75,12 +75,12 @@ Resources:
       SecurityGroups:
         - !GetAtt ALBSecurityGroup.GroupId
       Subnets:
-        - subnet-077c9758
-        - subnet-3246e63c
-        - subnet-3ccd235a
-        - subnet-8d8dbfb3
-        - subnet-c41ba589
-        - subnet-ed49bccc
+        - subnet-ec0fa3b3
+        - subnet-d5a6c3db
+        - subnet-82c566e4
+        - subnet-9852a5a9
+        - subnet-6253fd43
+        - subnet-9fe99ad2
       Type: application
 
   ALBListener:
