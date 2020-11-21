@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: 2010-09-09
 
 Description: >
   CloudFormation Template for Phonebook Application. This template creates Application Load Balancer 
-  with Auto Scaling Group of Amazon Linux 2 (ami-026dea5602e368e96) EC2 Instances which host Python Flask Web Application.
+  with Auto Scaling Group of Amazon Linux 2 (ami-04bf6dcdc9ab498ca) EC2 Instances which host Python Flask Web Application.
   EC2 instances are placed within WebServerSecurityGroup which allows http (80) connections only from ALBSecurityGroup,
   and allows tcp(3306) connections only within itself. RDS DB instance is placed within WebServerSecurityGroup so that
   Database Server can communicate with Web Servers.
@@ -38,9 +38,9 @@ Resources:
     Type: AWS::EC2::LaunchTemplate
     Properties: 
       LaunchTemplateData:
-        ImageId: ami-09d95fab7fff3776c
+        ImageId: ami-04bf6dcdc9ab498ca
         InstanceType: t2.micro
-        KeyName: call.training
+        KeyName: p
         SecurityGroupIds: 
           - !GetAtt WebServerSecurityGroup.GroupId
         TagSpecifications: 
@@ -58,6 +58,17 @@ Resources:
                 pip3 install flask
                 pip3 install flask_mysql
                 echo "${MyDBURI}" > /home/ec2-user/dbserver.endpoint
+
+                cd /home/ec2-user
+                mkdir templates
+                cd templates
+                wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/002-milliseconds-converter/templates/index.html
+                wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/002-milliseconds-converter/templates/result.html
+                cd ..
+                wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/002-milliseconds-converter/app_boolprintloop.py
+                sudo python3 app_boolprintloop.py
+
+
                 TOKEN="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
                 FOLDER="https://$TOKEN@raw.githubusercontent.com/clarusway/cw-workshop/aws/pr-004/aws/projects/004-phonebook-web-application/"
                 curl -s --create-dirs -o "/home/ec2-user/templates/index.html" -L "$FOLDER"templates/index.html
@@ -66,6 +77,7 @@ Resources:
                 curl -s --create-dirs -o "/home/ec2-user/app.py" -L "$FOLDER"phonebook-app.py
                 python3 /home/ec2-user/app.py
               - MyDBURI: !GetAtt MyDatabaseServer.Endpoint.Address
+
   WebServerTG:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties: 
@@ -84,13 +96,14 @@ Resources:
       SecurityGroups: 
         - !GetAtt ALBSecurityGroup.GroupId
       Subnets:
-        - subnet-c41ba589
-        - subnet-077c9758
-        - subnet-3ccd235a
-        - subnet-ed49bccc
-        - subnet-8d8dbfb3
-        - subnet-3246e63c
+        - subnet-ec0fa3b3
+        - subnet-d5a6c3db
+        - subnet-82c566e4
+        - subnet-9852a5a9
+        - subnet-6253fd43
+        - subnet-9fe99ad2
       Type: application
+
   ALBListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties: 
@@ -100,6 +113,7 @@ Resources:
       LoadBalancerArn: !Ref ApplicationLoadBalancer
       Port: 80
       Protocol: HTTP
+
   WebServerASG:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties: 
@@ -126,6 +140,7 @@ Resources:
   
   MyDatabaseServer:
     Type: "AWS::RDS::DBInstance"
+    DeletionPolicy: Delete
     Properties:
       AllocatedStorage: 20
       AllowMajorVersionUpgrade: false
@@ -136,7 +151,8 @@ Resources:
       DBName: phonebook
       Engine: MySQL
       EngineVersion: 8.0.19
-      MasterUserPassword: Callahan_1
+      DBInstanceClass: db.t2.micro
+      MasterUserPassword: Clarusway_1
       MasterUsername: admin
       MonitoringInterval: 0
       MultiAZ: false
