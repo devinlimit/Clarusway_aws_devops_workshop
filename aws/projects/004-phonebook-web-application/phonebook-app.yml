@@ -62,20 +62,12 @@ Resources:
                 cd /home/ec2-user
                 mkdir templates
                 cd templates
-                wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/002-milliseconds-converter/templates/index.html
-                wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/002-milliseconds-converter/templates/result.html
+                wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/004-phonebook-web-application/templates/add-update.html
+                wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/004-phonebook-web-application/templates/delete.html
+                wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/004-phonebook-web-application/templates/index.html
                 cd ..
-                wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/002-milliseconds-converter/app_boolprintloop.py
-                sudo python3 app_boolprintloop.py
-
-
-                TOKEN="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                FOLDER="https://$TOKEN@raw.githubusercontent.com/clarusway/cw-workshop/aws/pr-004/aws/projects/004-phonebook-web-application/"
-                curl -s --create-dirs -o "/home/ec2-user/templates/index.html" -L "$FOLDER"templates/index.html
-                curl -s --create-dirs -o "/home/ec2-user/templates/add-update.html" -L "$FOLDER"templates/add-update.html
-                curl -s --create-dirs -o "/home/ec2-user/templates/delete.html" -L "$FOLDER"templates/delete.html
-                curl -s --create-dirs -o "/home/ec2-user/app.py" -L "$FOLDER"phonebook-app.py
-                python3 /home/ec2-user/app.py
+                wget https://raw.githubusercontent.com/devinlimit/Clarusway_aws_devops_workshop/master/aws/projects/004-phonebook-web-application/phonebook-app.py
+                python3 /home/ec2-user/phonebook-app.py
               - MyDBURI: !GetAtt MyDatabaseServer.Endpoint.Address
 
   WebServerTG:
